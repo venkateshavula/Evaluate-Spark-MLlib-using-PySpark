@@ -19,23 +19,23 @@ def kappa(tp, tn, fp, fn):
     from pyspark.ml.evaluation import BinaryClassificationEvaluator
     import math
     
-    print "Spam=",result[(result.label == 1)].count(),";No-Spam",result[(result.label == 0)].count()    
+    print "Spam=",predictions[(predictions.label == 1)].count(),";No-Spam",predictions[(predictions.label == 0)].count()    
     
     eval = BinaryClassificationEvaluator()
     # Area under the ROC curve
-    auroc = eval.evaluate(result,{eval.metricName:"areaUnderROC"})
+    auroc = eval.evaluate(predictions,{eval.metricName:"areaUnderROC"})
     # Area under the PR curve
-    aupr = eval.evaluate(result,{eval.metricName:"areaUnderPR"})
+    aupr = eval.evaluate(predictions,{eval.metricName:"areaUnderPR"})
     print "\n The AUROC is %s and the AUPR is %s" %(round(auroc,3), round(aupr,3))
     
     # True Positives
-    tp= result[(result.label == 1) & (result.prediction == 1)].count()
+    tp= predictions[(predictions.label == 1) & (predictions.prediction == 1)].count()
     # True Negatives
-    tn= result[(result.label == 0) & (result.prediction == 0)].count()
+    tn= predictions[(predictions.label == 0) & (predictions.prediction == 0)].count()
     # False Positives
-    fp= result[(result.label == 0) & (result.prediction == 1)].count()
+    fp= predictions[(predictions.label == 0) & (predictions.prediction == 1)].count()
     # False Negatives
-    fn= result[(result.label == 1) & (result.prediction == 0)].count()
+    fn= predictions[(predictions.label == 1) & (predictions.prediction == 0)].count()
     print "\n True Positives= %s; True Negatives= %s; False Positives= %s; False Negatives= %s" %(tp, tn, fp, fn)
 
     # Model Accuracy 
